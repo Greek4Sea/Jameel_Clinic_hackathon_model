@@ -33,7 +33,7 @@ for i in combined.columns:
         combined[i] = nums
 
 combined = combined.fillna(-1000)#this fills in NaN with a number so stupid that the model learns to not account for it
-X = combined.loc["train"].to_numpy() #these two seperate the data we had factorized into its training and testing sets since they had gotten links
+X = combined.loc["train"].to_numpy() #these two separate the data we had factorized into its training and testing sets since they had gotten links
 X_test = combined.loc["test"].to_numpy()
 Y = trainingdata[TARGET].astype(int).to_numpy() #answers
 # we will split the training data into a randomized 80 - 20 split

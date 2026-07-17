@@ -1,0 +1,22 @@
+In this project we created a Gradiant Boost model that predicts the the probability of a patient needing a specialist in the future
+
+Our codebase is set up as seen below:
+
+LightGBM_model_hackathon -
+    question4
+        |___AllergyBoost_Model.py
+        |
+        |___figures.py
+        |
+        |___README.md
+        |
+        |___requirements.txt
+
+The model we are using is specifically HistGradiantBoostingClassifier from the Sklearn Library
+
+to run this code please run the following command:
+
+python '''
+pip install -r requirements.txt
+'''
+
