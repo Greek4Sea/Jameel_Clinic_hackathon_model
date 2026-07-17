@@ -33,13 +33,24 @@ combined = combined.fillna(-1000)#this fills in NaN with a number so stupid that
 X = combined.loc["train"].to_numpy() #these two seperat the data we had factorized into its training and testing sets since they had gotten links
 X_test = combined.loc["test"].to_numpy()
 
-# we will split the trianing data into a randomized 80 - 20 split
+# we will split the training data into a randomized 80 - 20 split
 random_data = np.random.RandomState(STATE)
 shuffle_patients_index = random_data.permutation(len(X))
 N_validation = len(X) // 5 #splitting into 20% for validation
 #break up the index numbers into validation and training
 validation_index = shuffled[:N_validation]
 training_index = shuffled[N_validation:]
+
+
+#split up the training data into its x and y
+x_training = X[training_index]
+y_training = Y[training_index]
+#split up the validation data into its x and y
+x_validation = X[validation_index]
+y_validation = Y[validation_index]
+
+
+
 
 
 
