@@ -2,8 +2,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.metrics import log_loss, accuracy_score #for testing its AUC
+from sklearn.metrics import log_loss, accuracy_score # for getting results
 import joblib
+
 #import the libraries we need: pandas for loading the data from the csv
 #and numpy for clean calculations without the need for "for loops"
 #and sklearn for the HistGradientBoostingClassifier which is the model we will train on
