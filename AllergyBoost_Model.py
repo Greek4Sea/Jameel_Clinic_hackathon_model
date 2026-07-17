@@ -1,17 +1,18 @@
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from sklearn.tree import DecisionTreeRegressor
-
+from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.metrics import log_loss, accuracy_score #for testing its AUC
+import joblib
 #import the libraries we need: pandas for loading the data from the csv
 #and numpy for clean calculations without the need for "for loops"
-#and sklearn for the DecisionTreeRegressor which is the model we will train on
+#and sklearn for the HistGradientBoostingClassifier which is the model we will train on
 
 TARGET = "Seen_Allergist"
 STATE = 42 #seed to lock the random number generator
 #to load the data
 
-root = Path(__file__).resolve().parents[1]
+root = Path(__file__).resolve().parent
 trainingdata = pd.read_csv(root / "question4" / "train.csv")
 testingdata  = pd.read_csv(root / "question4" / "test_X.csv")
 
@@ -50,9 +51,30 @@ y_training = Y[training_index]
 x_validation = X[validation_index]
 y_validation = Y[validation_index]
 
+model = HistGradientBoostingClassifier(
+    learning_rate=0.1, #how small the steps are
+    max_iter=500,# how many itirations
+    early_stopping=True,# stops overfitting from noise
+    random_state=STATE,# keeps the same randomized state
+)
 
-print(x_training.shape, x_validation.shape, X_test.shape, y.shape)
-
-
-
-
+model.fit(x_training, y_training) #trains the model
+# real prediations on the test data
+test_probs = model.predict_proba(X_test)[:, 1]
+#saving model stuff
+joblib.dump(
+    {
+        "model": model,
+        "x_validation": x_validation,
+        "y_validation": y_validation,
+        "X_test": X_test,
+        "feature_names": list(combined.columns),
+        "base_rate": y_training.mean(),
+        "test_ids": testingdata["id"].to_numpy(),
+        "test_probs": test_probs,
+    },
+    root / "allergyboost.joblib",
+)
+#saving the real test results
+submission = pd.DataFrame({"id": testingdata["id"], "prediction": test_probs})
+submission.to_csv(root / "question4_predictions.csv", index=False)
