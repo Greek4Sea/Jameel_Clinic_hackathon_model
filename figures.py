@@ -64,7 +64,9 @@ fig.tight_layout()
 fig.savefig(root / "figure_1.png", dpi=150)
 print("saved figure_1.png")
 
+
 #FIGURE 2 feature weights
+imp = permutation_importance(model, x_val, y_val, scoring="accuracy", n_repeats=10, random_state=STATE)
 order = imp.importances_mean.argsort()[::-1][:15]
 names = [feature_names[i] for i in order]
 validation = imp.importances_mean[order]
@@ -72,7 +74,7 @@ error = imp.importances_std[order]
 
 fig, ax = plt.subplots(figsize=(8, 6))
 ypos = np.arange(len(names))[::-1]
-ax.barh(ypos, vals, xerr=error, color="#2c7fb8")
+ax.barh(ypos, validation, xerr=error, color="#2c7fb8")
 ax.set_yticks(ypos)
 ax.set_yticklabels(names)
 ax.set_xlabel("Drop in accuracy when feature is shuffled")
