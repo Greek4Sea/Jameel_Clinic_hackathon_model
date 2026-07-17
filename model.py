@@ -23,23 +23,24 @@ test_features = testingdata[features.columns]#load test data to convert to numbe
 combined = pd.concat([features, test_features], keys=["train", "test"])
 for i in combined.columns:
     if not pd.api.types.is_numeric_dtype(combined[i]):
-        nums, _ = pd.factorize(combined[col])
+        nums, _ = pd.factorize(combined[i])
         nums = nums.astype(float) #convert all to floats
-        for i in range(len(nums)): #if there is a missing vaue then it replaces it with NaN, since the factorizing will turn it into -1
-            if nums[i] == -1:
-                nums[i] = np.nan
+        for t in range(len(nums)): #if there is a missing value then it replaces it with NaN, since the factorizing will turn it into -1
+            if nums[t] == -1:
+                nums[t] = np.nan
+        combined[i] = nums
 
 combined = combined.fillna(-1000)#this fills in NaN with a number so stupid that the model learns to not account for it
-X = combined.loc["train"].to_numpy() #these two seperat the data we had factorized into its training and testing sets since they had gotten links
+X = combined.loc["train"].to_numpy() #these two seperate the data we had factorized into its training and testing sets since they had gotten links
 X_test = combined.loc["test"].to_numpy()
-
+Y = trainingdata[TARGET].astype(int).to_numpy() #answers
 # we will split the training data into a randomized 80 - 20 split
 random_data = np.random.RandomState(STATE)
 shuffle_patients_index = random_data.permutation(len(X))
 N_validation = len(X) // 5 #splitting into 20% for validation
 #break up the index numbers into validation and training
-validation_index = shuffled[:N_validation]
-training_index = shuffled[N_validation:]
+validation_index = shuffle_patients_index[:N_validation]
+training_index = shuffle_patients_index[N_validation:]
 
 
 #split up the training data into its x and y
@@ -50,7 +51,7 @@ x_validation = X[validation_index]
 y_validation = Y[validation_index]
 
 
-
+print(x_training.shape, x_validation.shape, X_test.shape, y.shape)
 
 
 
