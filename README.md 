@@ -18,5 +18,13 @@ to run this code please run the following command:
 
 python '''
 pip install -r requirements.txt
+
+python3 AllergyBoost_Model.py
+
+python3 figures.py
 '''
+
+Generates:
+    - figure1.png: HistgradiantBoostingClassifier vs baseline
+    - figure2.png: HistgradiantBoostingClassifier top 15 feature weights
 
